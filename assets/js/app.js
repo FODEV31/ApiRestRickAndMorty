@@ -8,7 +8,7 @@ function ListaDepersonajes(){
     charactersContainer.innerHTML = `<h1>Lista de Personajes:</h1>`;
      for(let i = 0; i < personajes.length; i++){
         const character = personajes[i];
-        charactersContainer.innerHTML += `<h2> ID: ${character.id} - Nombre: ${character.name} - Especie: ${character.species}</h2>`;
+        charactersContainer.innerHTML += `<img src="${personajes[i].image}" alt="${personajes.name}"> <h2> ID: ${character.id} - Nombre: ${character.name} - Especie: ${character.species}</h2>`;
         if(!characterSpecies.includes(character.species)){
             characterSpecies.push(character.species);
         }
