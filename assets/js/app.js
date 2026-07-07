@@ -3,9 +3,8 @@ let  personajes = null;
 let characterSpecies = [];
 
 
-
-function ListaDepersonajes(personajes){
-    const charactersContainer = document.getElementById("characters-container");
+function ListaDepersonajes(){
+    const charactersContainer = document.getElementById("resultado");
     charactersContainer.innerHTML = `<h1>Lista de Personajes:</h1>`;
      for(let i = 0; i < personajes.length; i++){
         const character = personajes[i];
@@ -16,8 +15,15 @@ function ListaDepersonajes(personajes){
     }
 }
 function MostrarEspecies(personajes){
-    const speciesContainer = document.getElementById("character-species");
+    const speciesContainer = document.getElementById("resultado");
     speciesContainer.innerHTML = `<h1>Especies de Personajes:</h1>`;
+    for(let i = 0; i < personajes.length; i++){
+        const character = personajes[i];
+        if(!characterSpecies.includes(character.species)){
+            characterSpecies.push(character.species);
+        }
+    }
+    characterSpecies.sort();
     characterSpecies.forEach(species => {
         speciesContainer.innerHTML += `<h1>${species}</h1>`;
         for(let i = 0; i < personajes.length; i++){
@@ -29,27 +35,28 @@ function MostrarEspecies(personajes){
 }
 function CargarPersonajes(){
     if(personajes !== null){
-        ListaDepersonajes(personajes);
-        MostrarEspecies(personajes);
-        MostrarPerfil(personajes)
+        return (personajes);
     } else {
         fetch(URL)
             .then(response => response.json())
             .then(data => {
                 personajes = data;
-                ListaDepersonajes(personajes);
-                MostrarEspecies(personajes);
-                MostrarPerfil(personajes)
+                return (personajes);
             });    
     }
     
 }
 function MostrarPerfil(personajes){
-    const profileContainer = document.getElementById("character-profile");
+    const profileContainer = document.getElementById("resultado");
+    const characterId = parseInt(prompt("Ingrese el ID del personaje que desea ver:"));
     profileContainer.innerHTML = `<h1>Fichas de Personajes</h1>`;
     for(let i = 0; i < personajes.length; i++){
-        profileContainer.innerHTML += `<h2> ID: ${personajes[i].id} - Nombre: ${personajes[i].name} - Especie: ${personajes[i].species}</h2>`;
-        profileContainer.innerHTML += `<img src="${personajes[i].image}" alt="${personajes[i].name}">`;        
+        if(personajes[i].id === characterId){
+            profileContainer.innerHTML += `<h2> ID: ${personajes[i].id} - Nombre: ${personajes[i].name} - Especie: ${personajes[i].species}</h2>`;
+            profileContainer.innerHTML += `<img src="${personajes[i].image}" alt="${personajes[i].name}">`;
+            return;
+        }
     }
+    profileContainer.innerHTML += `<p>Personaje no encontrado.</p>`;
 }
 CargarPersonajes();
